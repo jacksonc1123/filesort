@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
     if args.extension == 'all':
         for i in dest_list.keys():
-            sortfiles(i,args.directory,args.destination)
+            sortfiles(i,args.directory,dest_list.get(i))
     # print(args.directory)
     # print(args.extension)
     # try: 
