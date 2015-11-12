@@ -1,0 +1,128 @@
+#!/usr/bin/python
+# script to sort files by file type
+# TODO: 1. Add fancy output (if needed)
+#       2. Add flags
+#       3. Add create destination directory option
+#       4. Add ability to sort directory other than current working directory
+#       5. Add verbose output
+#       6. Customize output
+####################################################
+# version info
+####################################################
+__version__ = '2.0'
+__author__ = 'Cameron P. Jackson'
+
+####################################################
+# Modules imported
+####################################################
+import os
+import sys
+import argparse
+import getpass
+
+####################################################
+# globals
+####################################################
+# user
+user=getpass.getuser()
+
+# list of destinations
+dest_list={
+    '.mp3': "/home/{0}/music".format(user),
+    '.doc': "/home/{0}/documents".format(user),
+    '.ppt': "/home/{0}/documents".format(user),
+    '.txt': "/home/{0}/documents".format(user),
+    '.tar': "/home/{0}/compressed".format(user),
+    '.pkg.tar': "/home/{0}/builds".format(user),
+    '.zip': "/home/{0}/compressed".format(user),
+    '.rar': "/home/{0}/compressed".format(user),
+    '.pdf': "/home/{0}/pdf".format(user),
+    '.epub': "/home/{0}/books".format(user),
+    '.jpg': "/home/{0}/pictures".format(user),
+    '.jpeg': "/home/{0}/pictures".format(user),
+    '.png': "/home/{0}/pictures".format(user),
+}
+
+misc="/home/{0}/misc".format(user)
+
+####################################################
+# sortfiles function
+####################################################
+def sortfiles(ext, src, dest):
+    '''filesort 1.0 2015-11-06\nusage: filesort [keyword] [dest]
+    Moves files that contain the file extenstion [ext] to the directory 
+    specified by [dest].
+    If [ext] is not specified, filesort will move all files based on 
+    extension to predefined locations (/home/<user>/being the base directory)'''
+    # TODO: Add some pretty output
+    # Loop through all the files in the current directory
+    # Find files that contain desired file extension and move to destination
+    for root, directories, filenames in os.walk(src):
+        for filename in filenames:
+            srcpath = os.path.join(os.getcwd(),filename)
+            newpath = os.path.join(dest,filename)
+            miscpath = os.path.join(misc,filename)
+            if filename.find(ext) != -1:
+                # try to move file
+                try:
+                    #os.rename(srcpath,newpath)
+                    print(filename)
+                except FileNotFoundError:
+                    print('{0}: Invalid destination'.format(srcpath))
+                else:
+                    print('{0}: Moving to {1}'.format(srcpath,newpath))
+            else:
+                try:
+                    #os.rename(srcpath,miscpath)
+                except FileNotFoundError:
+                    print('{0}: Invalid destination'.format(srcpath))
+                
+####################################################
+# main function
+####################################################
+if __name__ == '__main__':
+    # get number of arguments passed to function
+    numargs = len(sys.argv)
+    # defaults
+    arg_parser = argparse.ArgumentParser(
+        description='sorts files in directory by file extension.')
+    arg_parser.add_argument(
+        'directory', metavar='PATH', nargs='?', type=str, default=os.getcwd(),
+        help='sort this directory (default is current directory)')
+    arg_parser.add_argument(
+        'destination', metavar='DEST', nargs='?', type=str,
+        help='move files to this directory (ignored if sorting entire folder)')
+    arg_parser.add_argument(
+        '-e', '--extension', metavar='EXT', default='all',
+        help='sort by this file extension')
+    arg_parser.add_argument(
+        '-f', '--force', action='store_true',
+        help='create destination directory if it doesn\'t exist')
+
+    args = arg_parser.parse_args()
+
+    if args.extension == 'all':
+        for i in dest_list.keys():
+            sortfiles('.'+
+    # print(args.directory)
+    # print(args.extension)
+    # try: 
+    #     extension=sys.argv[1]
+    #     destination=sys.argv[2]
+    # except IndexError:
+    #     extension=""
+    #     destination=""
+
+    # if numargs is 1:
+    #     print(sortfiles.__doc__)
+    # elif numargs is 3:
+    #     if os.path.isdir(destination):
+    #         sortfiles('.'+extension,destination)
+    #     else:
+    #         print('{0}: Invalid destination'.format(destination))
+    # else:
+    #     print(sortfiles.__doc__)
+        
+
+
+    
