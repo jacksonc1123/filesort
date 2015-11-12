@@ -64,18 +64,20 @@ def sortfiles(ext, src, dest):
             miscpath = os.path.join(misc,filename)
             if filename.find(ext) != -1:
                 # try to move file
-                try:
-                    #os.rename(srcpath,newpath)
-                    print(filename)
-                except FileNotFoundError:
-                    print('{0}: Invalid destination'.format(srcpath))
-                else:
-                    print('{0}: Moving to {1}'.format(srcpath,newpath))
+                print(filename)                
+                # try:
+                #     #os.rename(srcpath,newpath)
+                #     print(filename)
+                # except FileNotFoundError:
+                #     print('{0}: Invalid destination'.format(srcpath))
+                # else:
+                #     print('{0}: Moving to {1}'.format(srcpath,newpath))
             else:
-                try:
-                    #os.rename(srcpath,miscpath)
-                except FileNotFoundError:
-                    print('{0}: Invalid destination'.format(srcpath))
+                print(filename)
+                # try:
+                #     #os.rename(srcpath,miscpath)
+                # except FileNotFoundError:
+                #     print('{0}: Invalid destination'.format(srcpath))
                 
 ####################################################
 # main function
@@ -90,7 +92,7 @@ if __name__ == '__main__':
         'directory', metavar='PATH', nargs='?', type=str, default=os.getcwd(),
         help='sort this directory (default is current directory)')
     arg_parser.add_argument(
-        'destination', metavar='DEST', nargs='?', type=str,
+        'destination', metavar='DEST', nargs='?', type=str, default=os.getcwd(),
         help='move files to this directory (ignored if sorting entire folder)')
     arg_parser.add_argument(
         '-e', '--extension', metavar='EXT', default='all',
@@ -103,7 +105,7 @@ if __name__ == '__main__':
 
     if args.extension == 'all':
         for i in dest_list.keys():
-            sortfiles('.'+
+            sortfiles(i,args.directory,args.destination)
     # print(args.directory)
     # print(args.extension)
     # try: 
