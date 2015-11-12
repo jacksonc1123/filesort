@@ -1,15 +1,10 @@
 #!/usr/bin/python
 # script to sort files by file type
-# TODO: 1. Add fancy output (if needed)
-#       2. Add flags
-#       3. Add create destination directory option
-#       4. Add ability to sort directory other than current working directory
-#       5. Add verbose output
-#       6. Customize output
+
 ####################################################
 # version info
 ####################################################
-__version__ = '2.0'
+__version__ = '1.0'
 __author__ = 'Cameron P. Jackson'
 
 ####################################################
@@ -59,21 +54,20 @@ def sortfiles(ext, src, dest):
     # Find files that contain desired file extension and move to destination
     for root, directories, filenames in os.walk(src):
         for filename in filenames:
-            srcpath = os.path.join(os.getcwd(),filename)
+            srcpath = os.path.join(src,filename)
             newpath = os.path.join(dest,filename)
             miscpath = os.path.join(misc,filename)
             if filename.find(ext) != -1:
                 # try to move file
-                print(filename)                
-                # try:
-                #     #os.rename(srcpath,newpath)
-                #     print(filename)
-                # except FileNotFoundError:
-                #     print('{0}: Invalid destination'.format(srcpath))
-                # else:
-                #     print('{0}: Moving to {1}'.format(srcpath,newpath))
+                print(newpath)                
+                try:
+                    os.rename(srcpath,newpath)
+                except FileNotFoundError:
+                    print('{0}: Invalid destination'.format(srcpath))
+                else:
+                    print('{0}: Moving to {1}'.format(srcpath,newpath))
             else:
-                print(filename)
+                print("notfound")
                 # try:
                 #     #os.rename(srcpath,miscpath)
                 # except FileNotFoundError:
@@ -92,7 +86,7 @@ if __name__ == '__main__':
         'directory', metavar='PATH', nargs='?', type=str, default=os.getcwd(),
         help='sort this directory (default is current directory)')
     arg_parser.add_argument(
-        'destination', metavar='DEST', nargs='?', type=str, default="",
+        'destination', metavar='DEST', nargs='?', type=str, default=os.getcwd(), 
         help='move files to this directory (ignored if sorting entire folder)')
     arg_parser.add_argument(
         '-e', '--extension', metavar='EXT', default='all',
@@ -103,9 +97,17 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
 
-    if args.extension == 'all':
-        for i in dest_list.keys():
-            sortfiles(i,args.directory,args.destination)
+    if numargs is 1:
+        arg_parser.print_help()
+    elif not os.path.isdir(args.directory):
+        arg_parser.print_help()
+    else:
+        if args.extension == 'all':
+            for i in dest_list.keys():
+                sortfiles(i,args.directory,args.destination)
+        else:
+            sortfiles('.'+args.extension,args.directory,args.destination)
+
     # print(args.directory)
     # print(args.extension)
     # try: 
