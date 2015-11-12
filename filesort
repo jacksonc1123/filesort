@@ -92,7 +92,7 @@ if __name__ == '__main__':
         'directory', metavar='PATH', nargs='?', type=str, default=os.getcwd(),
         help='sort this directory (default is current directory)')
     arg_parser.add_argument(
-        'destination', metavar='DEST', nargs='?', type=str, default=os.getcwd(),
+        'destination', metavar='DEST', nargs='?', type=str, default="",
         help='move files to this directory (ignored if sorting entire folder)')
     arg_parser.add_argument(
         '-e', '--extension', metavar='EXT', default='all',
