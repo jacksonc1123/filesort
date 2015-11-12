@@ -1,6 +1,8 @@
 # Filesort
 Sorts files from given directory by file extension (linux)
 
+Not working just yet.
+
 # TODO: 
 1. Add fancy output (if needed)
 2. Add flags 
