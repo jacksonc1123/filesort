@@ -97,6 +97,7 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
 
+<<<<<<< HEAD
     if numargs is 1:
         arg_parser.print_help()
     elif not os.path.isdir(args.directory):
@@ -108,6 +109,11 @@ if __name__ == '__main__':
         else:
             sortfiles('.'+args.extension,args.directory,args.destination)
 
+=======
+    if args.extension == 'all':
+        for i in dest_list.keys():
+            sortfiles(i,args.directory,dest_list.get(i))
+>>>>>>> master
     # print(args.directory)
     # print(args.extension)
     # try: 
