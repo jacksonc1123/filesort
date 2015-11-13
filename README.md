@@ -22,7 +22,7 @@ Sorts files from given directory by file extension (linux)
 9. make default output directory the current directory for some erros
 
 #usage:
-```c++
+```
 filesort [-h] [-e EXT] [-f] [PATH] [DEST]
 
 positional arguments:
