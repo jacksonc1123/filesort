@@ -1,7 +1,6 @@
 # Filesort
 Sorts files from given directory by file extension (linux)
 
-<<<<<<< HEAD
 ## TODO: 
 * Add fancy output (if needed)
 * Add flags 
@@ -23,6 +22,7 @@ Sorts files from given directory by file extension (linux)
 9. make default output directory the current directory for some erros
 
 #usage:
+```c++
 filesort [-h] [-e EXT] [-f] [PATH] [DEST]
 
 positional arguments:
@@ -35,6 +35,5 @@ optional arguments:
   -e EXT, --extension EXT
                         sort by this file extension
   -f, --force           create destination directory if it doesn't exist
+```
 
-
->>>>>>> sortfile_redo
