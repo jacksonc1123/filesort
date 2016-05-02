@@ -1,27 +1,21 @@
 #!/usr/bin/python
 # script to sort files by file type
 
-####################################################
 # version info
-####################################################
 __version__ = '1.0'
 __author__ = 'Cameron P. Jackson'
 
-####################################################
 # Modules imported
-####################################################
 import os
 import sys
 import argparse
 import getpass
 
-####################################################
 # globals
-####################################################
-# user
+## user
 user=getpass.getuser()
 
-# list of destinations
+## list of destinations
 dest_list={
     '.mp3': "/home/{0}/music".format(user),
     '.doc': "/home/{0}/documents".format(user),
@@ -40,11 +34,9 @@ dest_list={
 
 misc="/home/{0}/misc".format(user)
 
-####################################################
 # sortfiles function
-####################################################
 def sortfiles(ext, src, dest):
-    '''filesort 1.0 2015-11-06\nusage: filesort [keyword] [dest]
+    '''filesort 1.0 2015-11-06\n usage: filesort [keyword] [dest]
     Moves files that contain the file extenstion [ext] to the directory 
     specified by [dest].
     If [ext] is not specified, filesort will move all files based on 
@@ -73,9 +65,7 @@ def sortfiles(ext, src, dest):
                 except FileNotFoundError:
                     print('{0}: Invalid destination'.format(srcpath))
                 
-####################################################
 # main function
-####################################################
 if __name__ == '__main__':
     # get number of arguments passed to function
     numargs = len(sys.argv)
@@ -95,42 +85,14 @@ if __name__ == '__main__':
         '-f', '--force', action='store_true',
         help='create destination directory if it doesn\'t exist')
 
+    # parse arguments
     args = arg_parser.parse_args()
 
-    if numargs is 1:
+    # main control
+    if numargs <= 1:
         arg_parser.print_help()
-    elif not os.path.isdir(args.directory):
-        arg_parser.print_help()
-    else:
-        if args.extension == 'all':
-            for i in dest_list.keys():
-                sortfiles(i,args.directory,args.destination)
-        else:
-            sortfiles('.'+args.extension,args.directory,args.destination)
-
-    if args.extension == 'all':
-        for i in dest_list.keys():
-            sortfiles(i,args.directory,dest_list.get(i))
-
-    # print(args.directory)
-    # print(args.extension)
-    # try: 
-    #     extension=sys.argv[1]
-    #     destination=sys.argv[2]
-    # except IndexError:
-    #     extension=""
-    #     destination=""
-
-    # if numargs is 1:
-    #     print(sortfiles.__doc__)
-    # elif numargs is 3:
-    #     if os.path.isdir(destination):
-    #         sortfiles('.'+extension,destination)
-    #     else:
-    #         print('{0}: Invalid destination'.format(destination))
-    # else:
-    #     print(sortfiles.__doc__)
+    
         
-
+    
 
     
