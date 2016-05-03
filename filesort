@@ -8,6 +8,8 @@ __author__ = 'Cameron P. Jackson'
 # Modules imported
 import os
 import sys
+import subprocess
+import glob
 import argparse
 import getpass
 
@@ -17,54 +19,57 @@ user=getpass.getuser()
 
 ## list of destinations
 dest_list={
-    '.mp3': "/home/{0}/music".format(user),
-    '.doc': "/home/{0}/documents".format(user),
-    '.ppt': "/home/{0}/documents".format(user),
-    '.txt': "/home/{0}/documents".format(user),
-    '.tar': "/home/{0}/compressed".format(user),
-    '.pkg.tar': "/home/{0}/builds".format(user),
-    '.zip': "/home/{0}/compressed".format(user),
-    '.rar': "/home/{0}/compressed".format(user),
-    '.pdf': "/home/{0}/pdf".format(user),
-    '.epub': "/home/{0}/books".format(user),
-    '.jpg': "/home/{0}/pictures".format(user),
-    '.jpeg': "/home/{0}/pictures".format(user),
-    '.png': "/home/{0}/pictures".format(user),
+    '*.mp3': "/home/{0}/music".format(user),
+    '*.doc*': "/home/{0}/documents".format(user),
+    '*.ppt': "/home/{0}/documents".format(user),
+    '*.txt': "/home/{0}/documents".format(user),
+    '*.tex': "/home/{0}/documents".format(user),
+    '*.tar*': "/home/{0}/compressed".format(user),
+    '*.zip': "/home/{0}/compressed".format(user),
+    '*.7z': "/home/{0}/compressed".format(user),
+    '*.rar': "/home/{0}/compressed".format(user),
+    '*.pdf': "/home/{0}/pdf".format(user),
+    '*.epub': "/home/{0}/books".format(user),
+    '*.jpg': "/home/{0}/image".format(user),
+    '*.jpeg': "/home/{0}/image".format(user),
+    '*.png': "/home/{0}/image".format(user),
 }
 
-misc="/home/{0}/misc".format(user)
-
 # sortfiles function
-def sortfiles(ext, src, dest):
+def sortfiles(src,dest,ext):
     '''filesort 1.0 2015-11-06\n usage: filesort [keyword] [dest]
     Moves files that contain the file extenstion [ext] to the directory 
     specified by [dest].
     If [ext] is not specified, filesort will move all files based on 
     extension to predefined locations (/home/<user>/being the base directory)'''
-    # TODO: Add some pretty output
-    # Loop through all the files in the current directory
-    # Find files that contain desired file extension and move to destination
-    for root, directories, filenames in os.walk(src):
-        for filename in filenames:
-            srcpath = os.path.join(src,filename)
-            newpath = os.path.join(dest,filename)
-            miscpath = os.path.join(misc,filename)
-            if filename.find(ext) != -1:
-                # try to move file
-                print(newpath)                
+
+    if ext == "all":
+        for key in dest_list:
+            # print(os.path.join(src,key))
+            glist = glob.glob(os.path.join(src,key))
+            for f in glist:
                 try:
-                    os.rename(srcpath,newpath)
-                except FileNotFoundError:
-                    print('{0}: Invalid destination'.format(srcpath))
-                else:
-                    print('{0}: Moving to {1}'.format(srcpath,newpath))
-            else:
-                try:
-                    #os.rename(srcpath,miscpath)
-                    print("notfound")
-                except FileNotFoundError:
-                    print('{0}: Invalid destination'.format(srcpath))
-                
+                    subprocess.call(["mv",f,dest_list[key]])
+                except OSError as e:
+                    print("***Execution failed:", e)
+                    
+    else:
+        # make sure a destination is specified for file extension
+        if dest == src:
+            sys.exit("Please specify a destination for this extension")
+
+        if ext[0] != '.':
+            # print(os.path.join(src,'*.'+ext))
+            glist = glob.glob(os.path.join(src,'*.'+ext))
+        else:
+            glist = glob.glob(os.path.join(src,'*'+ext))
+
+        for f in glist:
+            try:
+                subprocess.call(["mv",f,dest])
+            except OSError as e:
+                print("***Execution failed:", e)
+        
 # main function
 if __name__ == '__main__':
     # get number of arguments passed to function
@@ -73,17 +78,18 @@ if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser(
         description='sorts files in directory by file extension.')
     arg_parser.add_argument(
-        'directory', metavar='PATH', nargs='?', type=str, default=os.getcwd(),
-        help='sort this directory (default is current directory)')
-    arg_parser.add_argument(
-        'destination', metavar='DEST', nargs='?', type=str, default=os.getcwd(), 
-        help='move files to this directory (ignored if sorting entire folder)')
-    arg_parser.add_argument(
-        '-e', '--extension', metavar='EXT', default='all',
+        '-e', '--ext', metavar='EXT', default='all',
         help='sort by this file extension')
     arg_parser.add_argument(
         '-f', '--force', action='store_true',
         help='create destination directory if it doesn\'t exist')
+    arg_parser.add_argument(
+        '-s', '--src', metavar='SRC', type=str, default=os.getcwd(),
+        help='sort this directory (default is current directory)')
+    arg_parser.add_argument(
+        '-d', '--dest', metavar='DEST', type=str, default=os.getcwd(), 
+        help='move files to this directory (ignored if sorting entire folder.\
+        If left unspecified, default destination folders will be used)')
 
     # parse arguments
     args = arg_parser.parse_args()
@@ -91,8 +97,19 @@ if __name__ == '__main__':
     # main control
     if numargs <= 1:
         arg_parser.print_help()
-    
+        sys.exit()
         
-    
+    if args.force == True and args.dest == args.src:
+        for key in dest_list:
+            if os.path.isdir(dest_list[key]) == False:
+                os.makedirs(dest_list[key])
+    elif args.force == True:
+        if os.path.isdir(args.dest) == False:
+            os.makedirs(args.dest)
+
+    # print(args.src,args.dest,args.ext)
+    sortfiles(args.src,args.dest,args.ext)
+
+
 
     
