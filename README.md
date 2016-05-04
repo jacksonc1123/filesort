@@ -22,5 +22,7 @@ Example:
 filesort -e .mp3 -s /home/bob/miscdir -d /home/bob/music
 ```
 # TODO:
-* Manpage
+* Option specify additional extensions when doing full sort
+* Maybe add a config file
+* Change format of the destination folder list 
 

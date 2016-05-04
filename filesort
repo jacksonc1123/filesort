@@ -13,36 +13,36 @@ import glob
 import argparse
 import getpass
 
-# globals
-## user
+##### globals #####
+# The username
 user=getpass.getuser()
 
-## list of destinations
+# dictionary of destinations
+# PLEASE READ BEFORE EDITING
+# You MUST include at '*.' at least at the beginning of the extension type.
+# All directory paths must be absolute and begin with '/' for the root
+# directory. The {0} and consequently the '.format(user)'
+# takes the place of the user directory so leave that in there otherwise
+# it will break. 
 dest_list={
-    '*.mp3': "/home/{0}/music".format(user),
-    '*.doc*': "/home/{0}/documents".format(user),
-    '*.ppt': "/home/{0}/documents".format(user),
-    '*.txt': "/home/{0}/documents".format(user),
-    '*.tex': "/home/{0}/documents".format(user),
-    '*.tar*': "/home/{0}/compressed".format(user),
-    '*.zip': "/home/{0}/compressed".format(user),
-    '*.7z': "/home/{0}/compressed".format(user),
-    '*.rar': "/home/{0}/compressed".format(user),
-    '*.pdf': "/home/{0}/pdf".format(user),
-    '*.epub': "/home/{0}/books".format(user),
-    '*.jpg': "/home/{0}/image".format(user),
-    '*.jpeg': "/home/{0}/image".format(user),
-    '*.png': "/home/{0}/image".format(user),
+    '*.mp3' : "/home/{0}/Music".format(user),
+    '*.doc*': "/home/{0}/Documents".format(user),
+    '*.ppt' : "/home/{0}/Documents".format(user),
+    '*.txt' : "/home/{0}/Documents".format(user),
+    '*.tex' : "/home/{0}/Documents".format(user),
+    '*.tar*': "/home/{0}/Compressed".format(user),
+    '*.zip' : "/home/{0}/Compressed".format(user),
+    '*.7z'  : "/home/{0}/Compressed".format(user),
+    '*.rar' : "/home/{0}/Compressed".format(user),
+    '*.pdf' : "/home/{0}/Pdf".format(user),
+    '*.epub': "/home/{0}/Books".format(user),
+    '*.jpg' : "/home/{0}/Images".format(user),
+    '*.jpeg': "/home/{0}/Images".format(user),
+    '*.png' : "/home/{0}/Images".format(user),
 }
 
 # sortfiles function
 def sortfiles(src,dest,ext):
-    '''filesort 1.0 2015-11-06\n usage: filesort [keyword] [dest]
-    Moves files that contain the file extenstion [ext] to the directory 
-    specified by [dest].
-    If [ext] is not specified, filesort will move all files based on 
-    extension to predefined locations (/home/<user>/being the base directory)'''
-
     if ext == "all":
         for key in dest_list:
             # print(os.path.join(src,key))

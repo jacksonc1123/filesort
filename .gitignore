@@ -1,3 +1,5 @@
 # ignore the test folder
 test
 
+# ignore the weird tilde files
+*~
