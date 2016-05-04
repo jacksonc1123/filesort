@@ -21,6 +21,10 @@ Example:
 ```
 filesort -e .mp3 -s /home/bob/miscdir -d /home/bob/music
 ```
+# Known Bugs:
+* If directory in dest_list doesn't exist, it just renames the files to that
+directory name if the force option isn't specified.
+
 # TODO:
 * Option specify additional extensions when doing full sort
 * Maybe add a config file
