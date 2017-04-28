@@ -1,7 +1,7 @@
 # Filesort
 Sorts files from given directory by file extension (linux)
 
-# usage:
+# Usage:
 ```
 usage: filesort [-h] [-e EXT] [-f] [-s SRC] [-d DEST]
 
